@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Platazo</title>
+<meta name="theme-color" content="#FFB98A">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700;800&display=swap">
+<style>
+:root{--bg:#FFFFFF;--surface:#FFFFFF;--ink:#2B1D14;--muted:#6B5A4E;--line:#E3BFA3;--line2:#F8EADF;--accent:#FFB98A;--accent-ink:#2B1D14;--accent-strong:#B5541C;--pop:#E8843F;--nav:#FFDFC8;--nav-ink:#2B1D14;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1B1511;--surface:#261D17;--ink:#F6EBE2;--muted:#BBA898;--line:#4A3829;--line2:#32261E;--accent:#F2A66F;--accent-ink:#2B1D14;--accent-strong:#FFB98A;--pop:#F2A66F;--nav:#3A2A1F;--nav-ink:#F6EBE2;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1B1511;--surface:#261D17;--ink:#F6EBE2;--muted:#BBA898;--line:#4A3829;--line2:#32261E;--accent:#F2A66F;--accent-ink:#2B1D14;--accent-strong:#FFB98A;--pop:#F2A66F;--nav:#3A2A1F;--nav-ink:#F6EBE2;color-scheme:dark}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4}
+main{max-width:480px;margin:0 auto;padding:24px 20px 120px;display:flex;flex-direction:column;gap:14px}
+header{display:flex;align-items:center;justify-content:space-between}
+h1{margin:0;font-size:56px;line-height:1;font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.tag{margin:6px 0 0;font-size:16px;color:var(--muted)}
+#strip{display:flex;justify-content:space-between}
+.d{width:44px;height:56px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.d .n{font-size:18px;font-weight:700}
+.d.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.card>h2,.head{display:flex;align-items:center;gap:10px;margin:0;padding:12px 16px;font-size:20px;font-weight:800}
+.head h2{margin:0;font-size:20px;font-weight:800}
+.chip{background:var(--mark);color:var(--mark-ink);font-size:13px;font-weight:700;padding:2px 10px;border-radius:99px}
+.sm{margin-left:auto;font-size:14px;font-weight:400;color:var(--muted)}
+.meal{padding:12px 16px;border-top:1px solid var(--line2)}
+.meal label{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
+input[type=text]{width:100%;font:inherit;font-size:17px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px}
+input[type=text]::placeholder{color:var(--muted);opacity:.75}
+input.ing{margin-top:6px;font-size:15px;border:1.5px dashed var(--line)}
+input:focus-visible,button:focus-visible{outline:3px solid var(--accent-strong);outline-offset:2px}
+.list{padding:0 16px 8px}
+ul{list-style:none;margin:0;padding:0}
+li label{display:flex;align-items:center;gap:12px;min-height:44px;font-size:17px;border-top:1px solid var(--line2);cursor:pointer}
+li:first-child label{border-top:0}
+li input{width:22px;height:22px;margin:0;accent-color:var(--pop);flex:none}
+li.done span:first-of-type{text-decoration:line-through;color:var(--muted)}
+.qty{margin-left:auto;font-size:14px;color:var(--muted)}
+.empty{color:var(--muted);padding:12px 0}
+.act{padding:4px 16px 16px;display:flex;flex-wrap:wrap;gap:8px}
+.act #share{border-style:solid;background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+#smsg{flex-basis:100%;margin:0;font-size:14px;color:var(--muted)}
+#slink{flex-basis:100%}
+.sby{margin:0;padding:0 16px 8px;color:var(--muted);font-size:14px}
+.seg{display:flex;gap:4px;background:var(--line2);border-radius:14px;padding:4px;margin-bottom:14px}
+.seg button{flex:1;min-height:44px;border:0;border-radius:10px;background:transparent;color:var(--ink);font:inherit;font-weight:500;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--surface);font-weight:700;box-shadow:0 0 0 1px var(--line)}
+.favbar{display:flex;gap:8px;margin-top:8px}
+.favbar button{flex:1;min-height:44px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-size:15px;font-weight:500;cursor:pointer}
+.favbar button:first-child{border-color:var(--accent-strong);color:var(--accent-strong)}
+.favpanel{margin-top:8px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+.favrow{display:flex;border-top:1px solid var(--line2)}
+.favrow:first-child{border-top:0}
+.favuse{flex:1;text-align:left;min-height:44px;padding:8px 12px;background:transparent;border:0;color:var(--ink);font:inherit;font-size:16px;cursor:pointer;display:flex;flex-direction:column}
+.favuse small{color:var(--muted);font-size:13px}
+.favdel{min-width:44px;padding:0 12px;background:transparent;border:0;border-left:1px solid var(--line2);color:var(--muted);font:inherit;font-size:14px;cursor:pointer}
+.favempty{margin:0;padding:12px;color:var(--muted);font-size:14px}
+.people{display:flex;align-items:center;justify-content:space-between;padding:4px 16px}
+#plab{font-size:17px;font-weight:700}
+.step{display:flex;align-items:center;gap:8px}
+.step button{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--ink);font:inherit;font-size:22px;cursor:pointer}
+.step output{min-width:32px;text-align:center;font-size:20px;font-weight:700}
+body.shared #viewW,body.shared #viewC,body.shared nav,body.shared #greet,body.shared #nameBox{display:none!important}
+.nick{display:flex;gap:8px;margin-top:8px}
+.nick input{width:150px}
+.nick button{font:inherit;font-weight:700;min-height:44px;padding:0 14px;border-radius:12px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+#greet{display:flex;align-items:center;flex-wrap:wrap;gap:2px;overflow-wrap:anywhere}
+#hi{font-weight:700;color:var(--ink)}
+#chg{font:inherit;font-size:14px;background:none;border:0;color:var(--accent-strong);text-decoration:underline;cursor:pointer;min-height:44px;padding:0 8px}
+.act button{font:inherit;font-weight:700;min-height:44px;padding:0 16px;border-radius:12px;border:1.5px dashed var(--accent-strong);background:transparent;color:var(--accent-strong);cursor:pointer}
+.act button.armed{background:var(--accent);color:var(--accent-ink)}
+nav{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:480px;padding:0 12px calc(12px + env(safe-area-inset-bottom,0px))}
+nav div{display:flex;gap:8px;background:var(--nav);border-radius:24px;padding:8px}
+nav button{flex:1;min-height:48px;border:0;border-radius:16px;background:transparent;color:var(--nav-ink);font:inherit;font-size:16px;font-weight:500;cursor:pointer}
+nav button[aria-current=page]{background:var(--surface);color:var(--ink);font-weight:700}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div><h1>Platazo</h1><div class="tag" id="greet" hidden><span id="hi"></span><button type="button" id="chg">Cambiar apodo</button></div><div class="nick" id="nameBox"><input type="text" id="nick" maxlength="20" placeholder="Tu apodo" aria-label="Tu nombre o apodo" autocomplete="nickname"><button type="button" id="saveNick">Entrar</button></div><p class="tag" id="range" style="font-weight:700;color:var(--ink)"></p></div>
+    <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="var(--accent)"/><circle cx="32" cy="32" r="19" fill="none" stroke="var(--surface)" stroke-width="3"/><circle cx="32" cy="32" r="7" fill="var(--surface)"/></svg>
+  </header>
+  <div id="viewW">
+    <div class="seg" role="group" aria-label="Semana"><button type="button" id="wkCur" aria-pressed="false">Esta semana</button><button type="button" id="wkNext" aria-pressed="true">Próxima semana</button></div>
+    <div id="strip" role="group" aria-label="Días de la semana"></div>
+    <section class="card" style="margin-top:14px" aria-labelledby="dname">
+      <div class="head"><h2 id="dname"></h2><span class="sm" id="dcount"></span></div>
+      <div id="meals"></div>
+    </section>
+  </div>
+  <div id="viewC" hidden>
+    <section class="card" aria-labelledby="ct">
+      <div class="head"><h2 id="ct">Lista de compras</h2><span class="sm" id="scount"></span></div>
+      <div class="people"><span id="plab">Personas</span><div class="step"><button type="button" id="pMinus" aria-label="Menos personas">−</button><output id="pNum" aria-live="polite">1</output><button type="button" id="pPlus" aria-label="Más personas">+</button></div></div>
+      <p class="sby" id="phint">Las cantidades con número (como 200 g arroz) se escriben por persona y se multiplican.</p>
+      <div class="list"><ul id="list"></ul></div>
+      <div class="act"><button id="share" type="button">Compartir lista</button><button id="reset" type="button">Vaciar semana</button><p id="smsg" role="status"></p><input type="text" id="slink" readonly hidden aria-label="Link para compartir"></div>
+    </section>
+  </div>
+<div id="viewS" hidden><section class="card" aria-labelledby="st"><div class="head"><h2 id="st">Lista de compras</h2></div><p class="sby" id="sby"></p><div class="list"><ul id="slist"></ul></div><div class="act"><button id="openMine" type="button">Abrir mi Platazo</button></div></section></div>
+</main>
+<nav aria-label="Secciones"><div>
+  <button type="button" id="tabW" aria-current="page">Semana</button>
+  <button type="button" id="tabC">Compras</button>
+</div></nav>
+<script>
+const DAYS=["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+const LET=["L","M","X","J","V","S","D"];
+const MEALS=["Almuerzo","Merienda","Cena"];
+const KEY="platazo-v2",V1="platazo-v1",OLD="planificador-comidas-v1";
+const now=new Date();
+const todayIdx=(now.getDay()+6)%7;
+const nextMon=new Date(now.getFullYear(),now.getMonth(),now.getDate()+7-todayIdx);
+let nm=nextMon,isCur=false;
+const pad=n=>String(n).padStart(2,"0");
+const keyOf=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+let wk=keyOf(nm);
+let all={weeks:{}};
+try{
+  const raw=localStorage.getItem(KEY);
+  if(raw){const p=JSON.parse(raw);if(p&&p.weeks)all=p}
+  else{const old=localStorage.getItem(V1)||localStorage.getItem(OLD);if(old){const p=JSON.parse(old);if(p&&p.meals)all.weeks[wk]={meals:p.meals||{},checked:p.checked||{}}}}
+}catch(e){}
+if(all.v!==3){Object.values(all.weeks).forEach(w=>{const o=w.meals||{},n={};for(let d=0;d<7;d++){if(o[d+"-1"])n[d+"-0"]=o[d+"-1"];if(o[d+"-2"])n[d+"-2"]=o[d+"-2"]}w.meals=n});all.v=3}
+let state=all.weeks[wk]||{meals:{},checked:{}};
+function save(){all.weeks[wk]=state;try{localStorage.setItem(KEY,JSON.stringify(all))}catch(e){}}
+let sel=0;
+const calcDates=()=>DAYS.map((_,i)=>new Date(nm.getFullYear(),nm.getMonth(),nm.getDate()+i).getDate());
+let dates=calcDates();
+const fmt=d=>d.toLocaleDateString("es",{day:"numeric",month:"short"});
+const $=id=>document.getElementById(id);
+function cell(d,m){return state.meals[d+"-"+m]||(state.meals[d+"-"+m]={n:"",i:""})}
+function renderStrip(){
+  const s=$("strip");s.innerHTML="";
+  DAYS.forEach((n,i)=>{
+    const b=document.createElement("button");b.type="button";b.className="d"+(i===sel?" on":"");
+    b.setAttribute("aria-label",n+" "+dates[i]+(isCur&&i===todayIdx?", hoy":""));b.setAttribute("aria-pressed",String(i===sel));
+    const a=document.createElement("span");a.textContent=LET[i];
+    const c=document.createElement("span");c.className="n";c.textContent=dates[i];
+    b.append(a,c);b.addEventListener("click",()=>{sel=i;renderStrip();renderDay()});s.appendChild(b);
+  });
+}
+function updateCount(){const k=MEALS.filter((_,m)=>cell(sel,m).n.trim()).length;$("dcount").textContent=k+" de 3 comidas"}
+function renderDay(){
+  $("dname").textContent=DAYS[sel]+" "+dates[sel]+(isCur&&sel===todayIdx?" (hoy)":"");updateCount();
+  const box=$("meals");box.innerHTML="";
+  MEALS.forEach((mn,m)=>{
+    const c=cell(sel,m),wrap=document.createElement("div");wrap.className="meal";
+    const id="n"+sel+m;
+    const lab=document.createElement("label");lab.htmlFor=id;lab.textContent=mn;
+    const n=document.createElement("input");n.type="text";n.id=id;n.value=c.n;n.placeholder="¿Qué vas a comer?";n.autocomplete="off";
+    const ing=document.createElement("input");ing.type="text";ing.className="ing";ing.value=c.i;ing.placeholder="Ingredientes: 200 g arroz, 2 limones, sal";ing.autocomplete="off";ing.setAttribute("aria-label","Ingredientes de "+mn);
+    n.addEventListener("input",()=>{c.n=n.value;save();updateCount();shop()});
+    ing.addEventListener("input",()=>{c.i=ing.value;save();shop()});
+    const bar=document.createElement("div");bar.className="favbar";
+    const bPick=document.createElement("button");bPick.type="button";bPick.textContent="Favoritas";bPick.setAttribute("aria-expanded","false");
+    const bSave=document.createElement("button");bSave.type="button";bSave.textContent="Guardar favorita";
+    const panel=document.createElement("div");panel.className="favpanel";panel.hidden=true;
+    bar.append(bPick,bSave);
+    bSave.addEventListener("click",()=>{
+      const fn=c.n.trim();
+      if(!fn){flash(bSave,"Escribí la comida primero");return}
+      const f=all.favs.find(x=>x.n.toLowerCase()===fn.toLowerCase());
+      if(f){f.i=c.i}else{all.favs.push({n:fn,i:c.i})}
+      save();flash(bSave,"Guardada");
+    });
+    bPick.addEventListener("click",()=>{
+      const open=panel.hidden;panel.hidden=!open;bPick.setAttribute("aria-expanded",String(open));
+      if(open)fillPanel(panel,c,n,ing);
+    });
+    wrap.append(lab,n,ing,bar,panel);box.appendChild(wrap);
+  });
+}
+function shop(){
+  const map={};
+  Object.values(state.meals).forEach(c=>{
+    (c.i||"").split(",").map(s=>s.trim()).filter(Boolean).forEach(s=>{
+      const m=s.match(/^(\d+(?:[.,]\d+)?)\s*(?:(kg|gr|g|lt|ml|cc|l|unidades|unidad|un|u)(?=\s))?\s*(?:de\s+)?(.+)$/i);
+      let name=s,num=0,dim="n",mult=1;
+      if(m){num=parseFloat(m[1].replace(",","."));name=m[3].trim();const u=(m[2]||"").toLowerCase();
+        if(u==="kg"){dim="g";mult=1000}else if(u==="g"||u==="gr"){dim="g"}else if(u==="l"||u==="lt"){dim="ml";mult=1000}else if(u==="ml"||u==="cc"){dim="ml"}else{dim="c"}}
+      const lk=name.toLowerCase(),k=dim==="n"?lk:lk+"|"+dim;
+      if(!map[k])map[k]={label:name.charAt(0).toUpperCase()+name.slice(1),dim,q:0};
+      map[k].q+=dim==="n"?1:num*mult;
+    });
+  });
+  const P=all.people||1;
+  const items=Object.keys(map).sort((a,b)=>a.localeCompare(b,"es")).map(k=>{
+    const e=map[k];let q=e.q,qt="";
+    if(e.dim==="n"){qt=q>1?"×"+q:""}
+    else{q=q*P;
+      if(e.dim==="g")qt=q>=1000?(+(q/1000).toFixed(2))+" kg":(+q.toFixed(1))+" g";
+      else if(e.dim==="ml")qt=q>=1000?(+(q/1000).toFixed(2))+" l":(+q.toFixed(1))+" ml";
+      else qt="×"+(+q.toFixed(2));
+      qt=qt.replace(".",",");}
+    return {k,label:e.label,q,qt};
+  });lastItems=items;
+  $("scount").textContent=items.length+(items.length===1?" ingrediente":" ingredientes");
+  const ul=$("list");ul.innerHTML="";
+  if(!items.length){const e=document.createElement("li");e.className="empty";e.textContent="Agregá ingredientes a tus comidas y aparecen acá.";ul.appendChild(e);return}
+  items.forEach(it=>{
+    const li=document.createElement("li");if(state.checked[it.k])li.className="done";
+    const lab=document.createElement("label"),cb=document.createElement("input");
+    cb.type="checkbox";cb.checked=!!state.checked[it.k];
+    const sp=document.createElement("span");sp.textContent=it.label;
+    lab.append(cb,sp);
+    if(it.qt){const q=document.createElement("span");q.className="qty";q.textContent=it.qt;lab.appendChild(q)}
+    cb.addEventListener("change",()=>{state.checked[it.k]=cb.checked;li.classList.toggle("done",cb.checked);save()});
+    li.appendChild(lab);ul.appendChild(li);
+  });
+}
+function show(v){
+  $("viewW").hidden=v!=="w";$("viewC").hidden=v!=="c";
+  const w=$("tabW"),c=$("tabC");
+  if(v==="w"){w.setAttribute("aria-current","page");c.removeAttribute("aria-current")}else{c.setAttribute("aria-current","page");w.removeAttribute("aria-current")}
+  window.scrollTo(0,0);
+}
+$("tabW").addEventListener("click",()=>show("w"));
+$("tabC").addEventListener("click",()=>show("c"));
+const reset=$("reset");let armed=false,t;
+reset.addEventListener("click",()=>{
+  if(!armed){armed=true;reset.textContent="Tocá de nuevo para vaciar";reset.classList.add("armed");t=setTimeout(disarm,3500);return}
+  clearTimeout(t);state={meals:{},checked:{}};save();disarm();renderDay();shop();
+});
+function disarm(){armed=false;reset.textContent="Vaciar semana";reset.classList.remove("armed")}
+$("range").textContent="Semana del "+fmt(nm)+" al "+fmt(new Date(nm.getFullYear(),nm.getMonth(),nm.getDate()+6));
+let nick="";try{nick=localStorage.getItem("platazo-nick")||""}catch(e){}
+function renderNick(){const has=!!nick;$("greet").hidden=!has;$("nameBox").hidden=has;if(has)$("hi").textContent="Bienvenido/a, "+nick}
+function setNick(){const v=$("nick").value.trim().slice(0,20);if(!v)return;nick=v;try{localStorage.setItem("platazo-nick",nick)}catch(e){}renderNick()}
+$("saveNick").addEventListener("click",setNick);
+$("nick").addEventListener("keydown",e=>{if(e.key==="Enter")setNick()});
+$("chg").addEventListener("click",()=>{const cur=nick;nick="";$("nick").value=cur;renderNick();$("nick").focus()});
+let lastItems=[];
+function enc(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function dec(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";return JSON.parse(decodeURIComponent(escape(atob(s))))}
+function sharedData(){const h=location.hash;if(h.indexOf("#lista=")!==0)return null;try{const o=dec(h.slice(7));return o&&Array.isArray(o.i)?o:null}catch(e){return null}}
+function renderShared(o){
+  document.body.classList.add("shared");$("viewS").hidden=false;
+  $("sby").textContent=o.n?"Compartida por "+String(o.n).slice(0,20):"Lista compartida";
+  const ul=$("slist");ul.innerHTML="";
+  o.i.slice(0,200).forEach(r=>{
+    const li=document.createElement("li"),lab=document.createElement("label"),cb=document.createElement("input");
+    cb.type="checkbox";cb.checked=!!r[2];if(cb.checked)li.className="done";
+    const sp=document.createElement("span");sp.textContent=String(r[0]).slice(0,60);
+    lab.append(cb,sp);
+    const qs=typeof r[1]==="number"?(r[1]>1?"×"+r[1]:""):String(r[1]||"").slice(0,20);if(qs){const q=document.createElement("span");q.className="qty";q.textContent=qs;lab.appendChild(q)}
+    cb.addEventListener("change",()=>li.classList.toggle("done",cb.checked));
+    li.appendChild(lab);ul.appendChild(li);
+  });
+}
+$("openMine").addEventListener("click",()=>{try{history.replaceState(null,"",location.href.split("#")[0])}catch(e){location.hash=""}document.body.classList.remove("shared");$("viewS").hidden=true;renderNick()});
+async function share(){
+  const msg=$("smsg");$("slink").hidden=true;
+  if(window.claude){msg.textContent="El link se puede probar cuando la app esté publicada fuera de Claude (paso del APK).";return}
+  if(!lastItems.length){msg.textContent="Primero agregá ingredientes a tus comidas.";return}
+  const url=location.href.split("#")[0]+"#lista="+enc({n:nick,i:lastItems.map(it=>[it.label,it.qt,state.checked[it.k]?1:0])});
+  try{if(navigator.share){await navigator.share({title:"Lista de compras",text:"Mi lista de compras en Platazo",url});msg.textContent="";return}}catch(e){if(e&&e.name==="AbortError")return}
+  try{await navigator.clipboard.writeText(url);msg.textContent="Link copiado. Pegalo donde quieras compartirlo."}
+  catch(e){const f=$("slink");f.hidden=false;f.value=url;f.focus();f.select();msg.textContent="Copiá el link de abajo."}
+}
+$("share").addEventListener("click",share);
+const sd=sharedData();
+if(sd){renderShared(sd)}else{renderNick()}
+all.favs=all.favs||[];
+all.people=all.people||1;$("pNum").textContent=all.people;
+function setPeople(n){all.people=Math.max(1,Math.min(20,n));$("pNum").textContent=all.people;save();shop()}
+$("pMinus").addEventListener("click",()=>setPeople(all.people-1));
+$("pPlus").addEventListener("click",()=>setPeople(all.people+1));
+function flash(b,t){const o=b.dataset.o||b.textContent;b.dataset.o=o;b.textContent=t;clearTimeout(b._t);b._t=setTimeout(()=>{b.textContent=o},1600)}
+function fillPanel(panel,c,nIn,iIn){
+  panel.innerHTML="";
+  if(!all.favs.length){const p=document.createElement("p");p.className="favempty";p.textContent="Todavía no tenés favoritas. Escribí una comida y tocá «Guardar favorita».";panel.appendChild(p);return}
+  all.favs.slice().sort((a,b)=>a.n.localeCompare(b.n,"es")).forEach(f=>{
+    const row=document.createElement("div");row.className="favrow";
+    const use=document.createElement("button");use.type="button";use.className="favuse";
+    const t=document.createElement("span");t.textContent=f.n;use.appendChild(t);
+    if(f.i){const s=document.createElement("small");s.textContent=f.i;use.appendChild(s)}
+    use.addEventListener("click",()=>{c.n=f.n;c.i=f.i||"";nIn.value=c.n;iIn.value=c.i;save();updateCount();shop();panel.hidden=true;panel.previousElementSibling.firstChild.setAttribute("aria-expanded","false")});
+    const del=document.createElement("button");del.type="button";del.className="favdel";del.textContent="Quitar";del.setAttribute("aria-label","Quitar "+f.n+" de favoritas");
+    del.addEventListener("click",()=>{all.favs=all.favs.filter(x=>x!==f);save();fillPanel(panel,c,nIn,iIn)});
+    row.append(use,del);panel.appendChild(row);
+  });
+}
+function setWeek(cur){
+  isCur=cur;
+  nm=cur?new Date(nextMon.getFullYear(),nextMon.getMonth(),nextMon.getDate()-7):nextMon;
+  wk=keyOf(nm);
+  state=all.weeks[wk]||(all.weeks[wk]={meals:{},checked:{}});
+  dates=calcDates();
+  sel=cur?todayIdx:0;
+  $("wkCur").setAttribute("aria-pressed",String(cur));$("wkNext").setAttribute("aria-pressed",String(!cur));
+  $("range").textContent="Semana del "+fmt(nm)+" al "+fmt(new Date(nm.getFullYear(),nm.getMonth(),nm.getDate()+6));
+  renderStrip();renderDay();shop();
+}
+$("wkCur").addEventListener("click",()=>setWeek(true));
+$("wkNext").addEventListener("click",()=>setWeek(false));
+setWeek(false);
+</script>
+<script>
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+</script>
+</body>
+</html>
